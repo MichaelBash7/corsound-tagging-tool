@@ -6,7 +6,6 @@ import ClipService from "../api/ClipService";
 
 const ClipItem = (props) => {
 
-
     const {store} = useContext(Context)
 
     const [selectOkValues, setSelectOkValues] = useState({
@@ -17,6 +16,7 @@ const ClipItem = (props) => {
         age_range: '',
         ethnicity: '',
     });
+
     const [selectNotOkValues] = useState({
         videoId: props.post.subclipId,
         reviewer: store.user.email,

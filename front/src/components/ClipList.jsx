@@ -13,8 +13,6 @@ const ClipList = ({clips, title, remove}) => {
         )
     }
 
-    console.log("qwe", clips)
-
     return (
         <div>
             <h1 style={{textAlign: 'center'}}>
