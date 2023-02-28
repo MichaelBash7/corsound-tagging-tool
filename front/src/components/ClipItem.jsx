@@ -6,7 +6,6 @@ import ClipService from "../api/ClipService";
 
 const ClipItem = (props) => {
 
-
     const {store} = useContext(Context)
 
     const [selectOkValues, setSelectOkValues] = useState({
@@ -17,6 +16,7 @@ const ClipItem = (props) => {
         age_range: '',
         ethnicity: '',
     });
+
     const [selectNotOkValues] = useState({
         videoId: props.post.subclipId,
         reviewer: store.user.email,
@@ -59,18 +59,24 @@ const ClipItem = (props) => {
                         <option value="East Asian">East Asian</option>
                         <option value="Caucasian Latin">Caucasian Latin</option>
                         <option value="Asian Indian">Asian Indian</option>
+                        <option value="Arab">Arab</option>
                     </select>
+                    <input hidden value={props.post.subclipId} name="clipid"></input>
                     <MyButton disabled={isDisabled}
                               onClick={() => {
+                                  selectOkValues.videoId = props.post.subclipId;
                                   ClipService.putOkClips({ ...selectOkValues});
-                                  props.remove(props.post)}}
+                                  props.remove(props.post);
+                                    
+                                }}
                                   style={{marginLeft: 10}}>
                                      Ok
                     </MyButton>
-                    <MyButton onClick={() => {
+                    <MyButton  onClick={() => {
+                        selectNotOkValues.videoId = props.post.subclipId;
                         ClipService.putNotOkClips({ ...selectNotOkValues});
                         props.remove(props.post)}}
-                              style={{marginLeft: 10}}>
+                              style={{marginLeft: 10, color: 'white',  backgroundColor: 'indianred'}}>
                                      Not Ok
                     </MyButton>
                 </div>

@@ -23,11 +23,8 @@ function Video() {
         const response = await ClipService.getAllClips(limit, page);
         setClips([...clips, ...response.data])
         const totalCount = response.headers['x-total-count']
-         setTotalPages(getPageCount(totalCount, limit));
+        setTotalPages(getPageCount(totalCount, limit));
     })
-
-    console.log(clips)
-
 
     useObserver(lastElement, page < totalPages, isClipsLoading, () => {
         setPage(page + 1)
@@ -50,6 +47,8 @@ function Video() {
             <MyModal visible={modal} setVisible={setModal}>
                 <ClipForm/>
             </MyModal>
+
+            <hr style={{margin: '15px 0'}}/>
 
             <ClipList remove={removeClip} clips={clips} title="Short clips"/>
 
