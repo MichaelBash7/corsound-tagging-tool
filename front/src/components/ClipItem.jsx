@@ -34,7 +34,7 @@ const ClipItem = (props) => {
                 <div className="post__content">
                     <strong>{props.post.subclipId}</strong>
                     <div>
-                        <ClipPlayer url={props.post.s3_url} onReady={true}/>
+                        <ClipPlayer url={props.post.s3_url}/>
                     </div>
                 </div>
 
