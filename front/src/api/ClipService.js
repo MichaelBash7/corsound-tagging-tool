@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default class ClipService {
     static async getAllClips(limit = 5, page = 1) {
-        return await axios.get('http://54.246.41.115/videos/subclips_all/?nationality=ara&limit=100&token=11', {
+        return await axios.get('http://54.246.41.115/videos/subclips_all/?dataset=bc_queries&limit=100&token=11', {
             // params: {
             //     _limit: limit,
             //     _page: page

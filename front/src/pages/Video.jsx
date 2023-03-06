@@ -26,6 +26,8 @@ function Video() {
         setTotalPages(getPageCount(totalCount, limit));
     })
 
+    console.log(clips)
+
     useObserver(lastElement, page < totalPages, isClipsLoading, () => {
         setPage(page + 1)
     })
