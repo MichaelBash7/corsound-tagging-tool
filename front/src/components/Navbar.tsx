@@ -2,13 +2,14 @@ import React, {useContext} from 'react';
 import {Layout, Menu, Row} from "antd";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
+import {Link} from "react-router-dom";
+
 
 const Navbar = () => {
 
     const {store} = useContext(Context)
 
     return (
-        <div>
             <Layout.Header>
                 {store.isAuth
                     ?
@@ -17,10 +18,17 @@ const Navbar = () => {
                             <div style={{color: 'white'}}>
                                 {store.user.email}
                             </div>
+
+                            {store.user.email === 'arkady.krishtul@corsound.ai' &&(
+                            <Menu.Item key={1}>
+                                <Link to="/control">Admin Panel</Link>
+                            </Menu.Item>)}
+
+
                             <Menu.Item onClick={() => store.logout()}
-                                       key={1}
+                                       key={2}
                             >
-                                Logout
+                                Sign out
                             </Menu.Item>
                         </Menu>
                     </Row>
@@ -35,7 +43,6 @@ const Navbar = () => {
                 }
 
             </Layout.Header>
-        </div>
     );
 };
 

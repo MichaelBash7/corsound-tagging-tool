@@ -34,7 +34,7 @@ const ClipItem = (props) => {
                 <div className="post__content">
                     <strong>{props.post.subclipId}</strong>
                     <div>
-                        <ClipPlayer url={props.post.s3_url}/>
+                        <ClipPlayer url={props.post.s3_url} onReady={true}/>
                     </div>
                 </div>
 
@@ -62,21 +62,20 @@ const ClipItem = (props) => {
                         <option value="Arab">Arab</option>
                     </select>
                     <input hidden value={props.post.subclipId} name="clipid"></input>
-                    <MyButton disabled={isDisabled}
-                              onClick={() => {
+                    <MyButton     disabled={isDisabled}
+                                  onClick={() => {
                                   selectOkValues.videoId = props.post.subclipId;
                                   ClipService.putOkClips({ ...selectOkValues});
                                   props.remove(props.post);
-                                    
-                                }}
+                                  }}
                                   style={{marginLeft: 10}}>
                                      Ok
                     </MyButton>
-                    <MyButton  onClick={() => {
-                        selectNotOkValues.videoId = props.post.subclipId;
-                        ClipService.putNotOkClips({ ...selectNotOkValues});
-                        props.remove(props.post)}}
-                              style={{marginLeft: 10, color: 'white',  backgroundColor: 'indianred'}}>
+                    <MyButton     onClick={() => {
+                                  selectNotOkValues.videoId = props.post.subclipId;
+                                  ClipService.putNotOkClips({ ...selectNotOkValues});
+                                  props.remove(props.post)}}
+                                  style={{marginLeft: 10, color: 'white',  backgroundColor: 'indianred'}}>
                                      Not Ok
                     </MyButton>
                 </div>

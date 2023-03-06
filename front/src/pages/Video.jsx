@@ -8,7 +8,7 @@ import ClipForm from "../components/ClipForm";
 import ClipList from "../components/ClipList";
 import Loader from "../components/ui/loader/Loader";
 import {useObserver} from "../hooks/useObserver";
-import {Layout, Menu, Row} from 'antd';
+import {Layout, Row} from 'antd';
 
 function Video() {
     const [clips, setClips] = useState([])
@@ -39,8 +39,8 @@ function Video() {
     }
 
     return (
-        <Layout.Content>
 
+        <Layout.Content>
             <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
                 Watch parent video
             </MyButton>
