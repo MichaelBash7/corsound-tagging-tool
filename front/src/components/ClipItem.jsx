@@ -66,17 +66,6 @@ const ClipItem = (props) => {
                                   onClick={() => {
                                   selectOkValues.videoId = props.post.subclipId;
                                   ClipService.putOkClips({ ...selectOkValues});
-<<<<<<< HEAD
-                                  props.remove(props.post)}}
-                                  style={{marginLeft: 10}}>
-                                     Ok
-                    </MyButton>
-                    <MyButton  onClick={() => {
-                        selectNotOkValues.videoId = props.post.subclipId;
-                        ClipService.putNotOkClips({ ...selectNotOkValues});
-                        props.remove(props.post)}}
-                              style={{marginLeft: 10}}>
-=======
                                   props.remove(props.post);
                                   }}
                                   style={{marginLeft: 10}}>
@@ -87,7 +76,6 @@ const ClipItem = (props) => {
                                   ClipService.putNotOkClips({ ...selectNotOkValues});
                                   props.remove(props.post)}}
                                   style={{marginLeft: 10, color: 'white',  backgroundColor: 'indianred'}}>
->>>>>>> origin/master
                                      Not Ok
                     </MyButton>
                 </div>
