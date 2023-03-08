@@ -8,7 +8,6 @@ import './App.css'
 
 const App: FC = () => {
 
-
     const {store} = useContext(Context)
 
     useEffect(() => {
@@ -17,6 +16,9 @@ const App: FC = () => {
         }
     }, [])
 
+    if (store.isLoading) {
+        return <div>Loading...</div>
+    }
 
   return (
       <Layout>

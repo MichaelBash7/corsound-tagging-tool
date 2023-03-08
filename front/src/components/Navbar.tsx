@@ -19,7 +19,7 @@ const Navbar = () => {
                                 {store.user.email}
                             </div>
 
-                            {store.user.email === 'arkady.krishtul@corsound.ai' &&(
+                            {store.user.email === 'Mihaelbash@yandex.ru' &&(
                             <Menu.Item key={1}>
                                 <Link to="/control">Admin Panel</Link>
                             </Menu.Item>)}
