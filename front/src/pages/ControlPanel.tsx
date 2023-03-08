@@ -1,17 +1,19 @@
 import React, {FC, useContext} from 'react';
 import {Card, Layout, Menu, Row} from "antd";
 import CreateUser from "../components/CreateUser";
+import UserTable from "../components/UserTable";
 
 const ControlPanel: FC = () => {
 
     return (
 
         <Layout.Content>
-            <Row justify="center" align="middle" style={{height: '100vh'}}>
+            <Row>
                 <Card>
                     <CreateUser/>
                 </Card>
             </Row>
+            <UserTable/>
         </Layout.Content>
     );
 };
