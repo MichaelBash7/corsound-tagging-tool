@@ -2,9 +2,6 @@ import React, {useEffect, useRef, useState} from "react";
 import {useFetching} from "../hooks/useFetching";
 import ClipService from "../api/ClipService";
 import {getPageCount} from "../utils/Pages";
-import MyButton from "../components/ui/buttons/MyButton";
-import MyModal from "../components/ui/modal/MyModal";
-import ClipForm from "../components/ClipForm";
 import ClipList from "../components/ClipList";
 import Loader from "../components/ui/loader/Loader";
 import {useObserver} from "../hooks/useObserver";
@@ -12,7 +9,6 @@ import {Layout, Row} from 'antd';
 
 function Video() {
     const [clips, setClips] = useState([])
-    const [modal, setModal] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
     const [limit] = useState(10);
     const [page, setPage] = useState(1);
@@ -43,14 +39,6 @@ function Video() {
     return (
 
         <Layout.Content>
-            <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
-                Watch parent video
-            </MyButton>
-            <MyModal visible={modal} setVisible={setModal}>
-                <ClipForm/>
-            </MyModal>
-
-            <hr style={{margin: '15px 0'}}/>
 
             <ClipList remove={removeClip} clips={clips} title="Short clips"/>
 
