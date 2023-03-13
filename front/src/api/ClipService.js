@@ -25,7 +25,7 @@ export default class ClipService {
     }
 
     static async getAllClips(limit = 5, page = 1) {
-        return await axios.get('${this.API_HOST}/videos/subclips_all/?dataset=bc_queries&limit=100&token=11', {
+        return await axios.get(`${this.API_HOST}/videos/subclips_all/?dataset=bc_queries&limit=100&token=11`, {
             // params: {
             //     _limit: limit,
             //     _page: page
@@ -38,7 +38,7 @@ export default class ClipService {
     }
 
     static async putOkClips(okBody) {
-        return await axios.put('${this.API_HOST}/videos/subclips/?token=11', okBody, {
+        return await axios.put(`${this.API_HOST}/videos/subclips/?token=11`, okBody, {
             headers: {
                 'accept': 'application/json',
                 'x-token': '11',
@@ -47,7 +47,7 @@ export default class ClipService {
         })
     }
     static async putNotOkClips(notOkBody) {
-        return await axios.put('${this.API_HOST}/videos/subclips/?token=11', notOkBody,{
+        return await axios.put(`${this.API_HOST}/videos/subclips/?token=11`, notOkBody,{
             headers: {
                 'accept': 'application/json',
                 'x-token': '11',
