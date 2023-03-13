@@ -29,7 +29,7 @@ const ClipItem = (props) => {
         setSelectOkValues({...selectOkValues, [event.target.name]: event.target.value});
     }
 
-    const isDisabled = !selectOkValues.gender || !selectOkValues.age_range || !selectOkValues.ethnicity
+    const isDisabled = !selectOkValues.gender || !selectOkValues.age_range || !selectOkValues.ethnicity || props.showResults
 
     const formConfig = {
         ages: [
@@ -107,7 +107,9 @@ const ClipItem = (props) => {
                                   selectNotOkValues.videoId = props.post.subclipId;
                                   ClipService.putNotOkClips({ ...selectNotOkValues});
                                   props.remove(props.post)}}
-                                  style={{marginLeft: 10, color: 'white',  backgroundColor: 'indianred'}}>
+                                  style={{marginLeft: 10, color: 'white',  backgroundColor: 'indianred'}}
+                                  disabled={props.showResults}
+                    >
                                      Not Ok
                     </MyButton>
                 </div>

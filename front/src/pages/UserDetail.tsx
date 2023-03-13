@@ -35,13 +35,14 @@ const UserDetail: FC = () => {
         videos: Array<number>
     }
 
-    const loadData = async ( lastItem = 0) => {
+    const loadData = async ( email: string, lastItem = 0) => {
         ClipService.getUserVideos(email, PER_PAGE, lastLoaded).then(res => {
             if (!res) {
                 console.log("No data loaded from API")
                 return
             }
-            setClips(res.data)
+
+            setClips(lastItem ? clips.concat(res.data) : res.data)
             if (res.data.length === PER_PAGE) {
                 setlastLoaded(lastLoaded + res.data.length)
                 setButton(false)
@@ -57,16 +58,15 @@ const UserDetail: FC = () => {
                 return
             }
 
-
             const user: any = apiUsers.data.find(element => element._id === params.id)
-            setEmail(user.email)
-            loadData()
+            setEmail(user.email) // @TODO pass email to loadMore func without state?
+            loadData(user.email,0)
         })
         }, [])
 
     const loadMore = () => {
         setButton(true)
-        loadData(lastLoaded).then(() => {
+        loadData(email, lastLoaded).then(() => {
             setButton(false)
         })
     }
