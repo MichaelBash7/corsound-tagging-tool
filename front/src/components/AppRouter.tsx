@@ -11,12 +11,12 @@ const AppRouter = () => {
 
     return (
         store.isAuth ?
-        <Routes>
-            {privateRoutes.map(route =>
-            <Route key={route.path} path={route.path} element={<route.element/>}/>
-            )}
-            <Route path="/*" element={<Navigate to={RouteNames.VIDEO} replace/>}/>
-        </Routes>
+            <Routes>
+                {privateRoutes.map(route =>
+                    <Route key={route.path} path={route.path} element={<route.element/>}/>
+                )}
+                <Route path={RouteNames.LOGIN} element={<Navigate to={RouteNames.VIDEO} replace/>}/>
+            </Routes>
             :
             <Routes>
                 {publicRoutes.map(route =>
@@ -24,7 +24,7 @@ const AppRouter = () => {
                 )}
                 <Route path="/*" element={<Navigate to={RouteNames.LOGIN} replace/>}/>
             </Routes>
-    );
-};
+    )
+}
 
-export default observer (AppRouter);
+export default observer(AppRouter)

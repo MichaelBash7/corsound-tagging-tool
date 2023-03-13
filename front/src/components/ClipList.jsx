@@ -3,7 +3,7 @@ import ClipItem from "./ClipItem";
 import {TransitionGroup} from "react-transition-group";
 import {CSSTransition} from "react-transition-group";
 
-const ClipList = ({clips, title, remove}) => {
+const ClipList = ({clips, title, remove = null, showResults = false}) => {
 
     if (!clips.length) {
         return (
@@ -25,7 +25,7 @@ const ClipList = ({clips, title, remove}) => {
                     timeout={500}
                     classNames="post"
                 >
-                    <ClipItem remove={remove} number={index + 1} post={clip} />
+                    <ClipItem remove={remove} number={index + 1} post={clip} showResults={showResults} />
                 </CSSTransition>
                 )}
             </TransitionGroup>

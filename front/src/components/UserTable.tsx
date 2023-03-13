@@ -4,19 +4,19 @@ import {observer} from "mobx-react-lite";
 import {DeleteOutlined, EditTwoTone} from '@ant-design/icons';
 import ClipService from "../api/ClipService";
 import UserService from "../services/UserService";
+import {Link} from "react-router-dom";
+import {UserBase} from "../models/UserBase";
 
 const UserTable: FC = () => {
 
     const {Text} = Typography;
 
-    type User = {
-        id: string,
-        email: string,
+    interface UserList extends UserBase {
         stat?: object,
         videos: Array<number>
     }
 
-    const [users, setUsers] = useState<Array<User>>([])
+    const [users, setUsers] = useState<Array<UserList>>([])
     const handleDelete = (id: number) => {
         console.log(id)
     }
@@ -33,7 +33,7 @@ const UserTable: FC = () => {
     }
 
     useEffect(() => {
-        const usersList: Array<User> = []
+        const usersList: Array<UserList> = []
         getUsers().then((apiUsers) => {
             if (!apiUsers) return
             apiUsers.data.map((user) => {
@@ -71,16 +71,22 @@ const UserTable: FC = () => {
         //     ),
         //     width: 50,
         // },
-        {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
-            width: 100,
-        },
+        // {
+        //     title: 'ID',
+        //     dataIndex: 'id',
+        //     key: 'id',
+        //     width: 100,
+        // },
         {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
+            width: 100,
+            render: (_: any, record: UserList) => (
+                <Space size="middle">
+                    <Link to={"/admin/user/" + record.id}>{record.email}</Link>
+                </Space>
+            ),
         },
         {
             title: 'Statistics',
@@ -112,7 +118,7 @@ const UserTable: FC = () => {
                 if (res) {
                     let userVideos: number[] = []
                     res.data.map((userData: any) => {
-                        userVideos.push(parseInt(userData.videoId))
+                        userVideos.push(parseInt(userData.subclipId))
                     })
                    usersWithVideos[index].videos = userVideos
                    setUsers([...usersWithVideos])

@@ -7,10 +7,9 @@ import {IUser} from "../models/IUser";
 import UserService from "../services/UserService";
 import UserTable from "../components/UserTable";
 
-const ControlPanel: FC = () => {
+const Users: FC = () => {
 
     const [modal, setModal] = useState(false);
-    const [users, setUsers] = useState<IUser[]>([])
 
     return (
         <Layout.Content style={{height: '100vh'}}>
@@ -31,4 +30,4 @@ const ControlPanel: FC = () => {
     );
 };
 
-export default ControlPanel;
+export default Users;

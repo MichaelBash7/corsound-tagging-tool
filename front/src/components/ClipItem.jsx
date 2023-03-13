@@ -8,14 +8,16 @@ const ClipItem = (props) => {
 
     const {store} = useContext(Context)
 
-    const [selectOkValues, setSelectOkValues] = useState({
+    const defaultState = {
         videoId: props.post.subclipId,
         reviewer: store.user.email,
-        valid: 1,
-        gender: '',
-        age_range: '',
-        ethnicity: '',
-    });
+        valid: props.showResults ? props.post.valid : 1,
+        gender: props.showResults ? props.post.gender : '',
+        age_range: props.showResults ? props.post.age_range : '',
+        ethnicity: props.showResults ? props.post.ethnicity : '',
+    }
+
+    const [selectOkValues, setSelectOkValues] = useState(defaultState);
 
     const [selectNotOkValues] = useState({
         videoId: props.post.subclipId,
@@ -29,6 +31,46 @@ const ClipItem = (props) => {
 
     const isDisabled = !selectOkValues.gender || !selectOkValues.age_range || !selectOkValues.ethnicity
 
+    const formConfig = {
+        ages: [
+            "18-24",
+            "25-34",
+            "35-44",
+            "45-54",
+            "55-64",
+            "65 and older",
+        ],
+        ethnicity: [
+            "African American",
+            "East Asian",
+            "Caucasian Latin",
+            "Asian Indian",
+            "Arab",
+        ],
+        gender: [
+            "man",
+            "woman",
+        ],
+    }
+
+    const printFormOptions = (formConfigKey) => {
+        let options = []
+        formConfig[formConfigKey].map(value => {
+            options.push(<option value={value}>{value}</option>)
+        })
+        return options
+    }
+
+    const printResult = () => {
+        if (!props.showResults) return
+
+        return (
+            <div className="post__result">
+                {props.post.valid ? 'OK' : 'Not OK'}
+            </div>
+        )
+    }
+
     return (
             <div className="post">
                 <div className="post__content">
@@ -37,31 +79,21 @@ const ClipItem = (props) => {
                         <ClipPlayer url={props.post.s3_url}/>
                     </div>
                 </div>
-
+                {printResult()}
                 <div className="post__btns">
                     <select name="gender" value={selectOkValues.gender} onChange={handleSelectChange} >
                         <option value="">Gender</option>
-                        <option value="man">man</option>
-                        <option value="woman">woman</option>
+                        {printFormOptions('gender')}
                     </select>
                     <select name="age_range" value={selectOkValues.age_range} onChange={handleSelectChange} style={{marginLeft: 7}}>
                         <option value="">Age</option>
-                        <option value="18-24">18-24</option>
-                        <option value="25-34">25-34</option>
-                        <option value="35-44">35-44</option>
-                        <option value="45-54">45-54</option>
-                        <option value="55-64">55-64</option>
-                        <option value="65 and older">65 and older</option>
+                        {printFormOptions('ages')}
                     </select>
                     <select name="ethnicity" value={selectOkValues.ethnicity} onChange={handleSelectChange} style={{marginLeft: 7}}>
                         <option value="">Ethnicity</option>
-                        <option value="African American">African American</option>
-                        <option value="East Asian">East Asian</option>
-                        <option value="Caucasian Latin">Caucasian Latin</option>
-                        <option value="Asian Indian">Asian Indian</option>
-                        <option value="Arab">Arab</option>
+                        {printFormOptions('ethnicity')}
                     </select>
-                    <input hidden value={props.post.subclipId} name="clipid"></input>
+                    <input hidden value={props.post.subclipId} name="clipid" readOnly={props.showResults}></input>
                     <MyButton     disabled={isDisabled}
                                   onClick={() => {
                                   selectOkValues.videoId = props.post.subclipId;
