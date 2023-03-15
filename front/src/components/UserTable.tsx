@@ -1,7 +1,7 @@
 import React, {FC, useState, useEffect} from 'react';
-import {Table, Popconfirm, Space, Button, Typography} from "antd";
+import {Table, Input, Space, Button, Typography, Checkbox, message} from "antd";
 import {observer} from "mobx-react-lite";
-import {DeleteOutlined, EditTwoTone} from '@ant-design/icons';
+import {EditTwoTone} from '@ant-design/icons';
 import ClipService from "../api/ClipService";
 import UserService from "../services/UserService";
 import {Link} from "react-router-dom";
@@ -13,15 +13,22 @@ const UserTable: FC = () => {
 
     interface UserList extends UserBase {
         stat?: object,
-        videos: Array<number>
+        isActive: boolean, //@TODO: move to UserBase
+        edit: boolean,
+        password: string,
+
     }
 
     const [users, setUsers] = useState<Array<UserList>>([])
-    const handleDelete = (id: number) => {
-        console.log(id)
-    }
-    const handleEdit = (id: number) => {
-        console.log(id)
+
+    const toggleEdit = (id: string) => {
+        const newUsersState = users.map(user => {
+            if (user.id === id) {
+                user.edit = !user.edit
+            }
+            return user
+        })
+        setUsers(newUsersState)
     }
 
     async function getUsers() {
@@ -41,7 +48,9 @@ const UserTable: FC = () => {
                     id: user._id,
                     email: user.email,
                     stat: {},
-                    videos: []
+                    isActive: true,
+                    edit: false,
+                    password: '',
                 })
             })
             setUsers(usersList)
@@ -57,26 +66,57 @@ const UserTable: FC = () => {
         return (<Space direction="vertical">{list}</Space>)
     }
 
-    const renderVideosCell = (data: any) => {
-        if (!data) return
-        return (<Space direction="vertical">{data.join(' ')}</Space>)
+    const updateUser = (id:string) => {
+        const user = users.find(user => user.id === id)
+        if (!user) return
+        console.log({
+            email: user.email,
+            isActive: user.isActive,
+            password: user.password,
+        })
+        // post 'user_update' .then
+        message.success('Submit success!');
+        toggleEdit(id)
+    }
+    const updateIsActive = (id: string) => {
+        const newUsersState = users.map(user => {
+            if (user.id === id) {
+                user.isActive = !user.isActive
+            }
+            return user
+        })
+        setUsers(newUsersState)
+    }
+
+    const updatePassword = (id: string, newPassword: string) => {
+        const newUsersState = users.map(user => {
+            if (user.id === id) {
+                user.password = newPassword
+            }
+            return user
+        })
+        setUsers(newUsersState)
     }
 
     const columns = [
-        // {
-        //     title: 'Edit',
-        //     key: 'edit',
-        //     render: (_: any, record: any) => (
-        //         <EditTwoTone value={record.id} />
-        //     ),
-        //     width: 50,
-        // },
-        // {
-        //     title: 'ID',
-        //     dataIndex: 'id',
-        //     key: 'id',
-        //     width: 100,
-        // },
+        {
+            title: 'Edit',
+            key: 'edit',
+            render: (_: any, record: any) => (
+                <>
+                    <EditTwoTone onClick={() => toggleEdit(record.id)} style={{cursor: 'pointer', lineHeight: '36px'}}/>
+                    {record.edit &&
+                        <Button
+                            style={{background: '#198754', margin: '0 0 0 10px'}}
+                            type="primary"
+                            onClick={() => {updateUser(record.id)}}
+                        >
+                            Save
+                        </Button>}
+                </>
+            ),
+            width: 120,
+        },
         {
             title: 'Email',
             dataIndex: 'email',
@@ -89,43 +129,39 @@ const UserTable: FC = () => {
             ),
         },
         {
+            title: 'Active',
+            dataIndex: 'active',
+            key: 'active',
+            render: (_: any, record: UserList) => (
+                <Space size="middle">
+                    <Checkbox value={record.id} onChange={(checkbox) => {
+                        updateIsActive(checkbox.target.value)
+                    }} checked={record.isActive} disabled={!record.edit}></Checkbox>
+                </Space>
+            ),
+        },
+        {
+            title: 'Password',
+            dataIndex: 'password',
+            key: 'password',
+            render: (_: any, record: UserList) => (
+                <Space size="middle">
+                    <Input.Password
+                        placeholder={record.edit ? 'update pass' : ''}
+                        value={record.password}
+                        disabled={!record.edit}
+                        onChange={(input) => {updatePassword(record.id, input.target.value)}}
+                    />
+                </Space>
+            ),
+        },
+        {
             title: 'Statistics',
             dataIndex: 'stat',
             key: 'stat',
             render: (object: object) => renderDataCell(object)
-        },
-        {
-            title: 'Videos',
-            dataIndex: 'videos',
-            key: 'videos',
-            render: (object: object) => renderVideosCell(object)
-        },
-        // {
-        //     title: 'Del',
-        //     key: 'delete',
-        //     render: (_: any, record: any) => (
-        //         <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-        //             <DeleteOutlined />
-        //         </Popconfirm>
-        //     ),
-        //     width: 50,
-        // },
+        }
     ];
-    const loadVideoIds = () => {
-        const usersWithVideos = users
-        usersWithVideos.map((user, index) => {
-            ClipService.getUserVideos(user.email, 200).then((res) => {
-                if (res) {
-                    let userVideos: number[] = []
-                    res.data.map((userData: any) => {
-                        userVideos.push(parseInt(userData.subclipId))
-                    })
-                   usersWithVideos[index].videos = userVideos
-                   setUsers([...usersWithVideos])
-                }
-            }).catch((e) => console.log(`Error: ${e}`))
-        })
-    }
 
     const loadStat = () => {
         const usersWithStat = users
@@ -143,7 +179,6 @@ const UserTable: FC = () => {
         <>
             <Space wrap>
                 <Button type="primary" onClick={() => loadStat()}>Load statistics</Button>
-                <Button type="primary" onClick={() => loadVideoIds()}>Load video id's</Button>
             </Space>
             <Table
                 dataSource={users}
