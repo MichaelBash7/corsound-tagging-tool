@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect} from 'react';
-import {Table, Input, Space, Button, Typography, Checkbox, message} from "antd";
+import {Table, Input, Space, Button, Typography, Checkbox, message, Select} from "antd";
 import {observer} from "mobx-react-lite";
 import {EditTwoTone} from '@ant-design/icons';
 import ClipService from "../api/ClipService";
@@ -16,10 +16,13 @@ const UserTable: FC = () => {
         isActive: boolean, //@TODO: move to UserBase
         edit: boolean,
         password: string,
-
     }
 
-    const [users, setUsers] = useState<Array<UserList>>([])
+    const [users, setUsers] = useState<UserList[]>([])
+    const [datasets, setDatasets] = useState<string[]>([])
+
+    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const filteredOptions = datasets.filter((o) => !selectedItems.includes(o));
 
     const toggleEdit = (id: string) => {
         const newUsersState = users.map(user => {
@@ -54,6 +57,10 @@ const UserTable: FC = () => {
                 })
             })
             setUsers(usersList)
+        })
+
+        ClipService.getDatasets().then(datasets => {
+            setDatasets(datasets.data.datasets)
         })
     }, []);
 
@@ -154,6 +161,26 @@ const UserTable: FC = () => {
                     />
                 </Space>
             ),
+        },
+        {
+            title: 'Datasets',
+            dataIndex: 'datasets',
+            key: 'datasets',
+            render: (_: any, record: UserList) => (
+                <Select
+                    mode="multiple"
+                    disabled={!record.edit}
+                    placeholder="Choose dataset"
+                    value={selectedItems}
+                    onChange={setSelectedItems}
+                    style={{ width: '100%' }}
+                    options={filteredOptions.map((item) => ({
+                        value: item,
+                        label: item,
+                    }))}
+                />
+            ),
+            width: 200,
         },
         {
             title: 'Statistics',
