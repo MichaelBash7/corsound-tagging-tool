@@ -38,7 +38,8 @@ class UserService {
         if (!user) {
             throw ApiError.BadRequest('User with such email not found')
         }
-        if (UserModel.findOne({email, isUserActive: false})) {
+        const activeUser = await UserModel.findOne({isUserActive: true})
+        if (!activeUser) {
             throw ApiError.BadRequest('User account deactivated by Admin')
         }
         const isPassEquals = await bcrypt.compare(password, user.password);
