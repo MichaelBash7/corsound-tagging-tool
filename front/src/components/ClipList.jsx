@@ -25,7 +25,7 @@ const ClipList = ({clips, title, remove = null, showResults = false}) => {
                     timeout={500}
                     classNames="post"
                 >
-                    <ClipItem remove={remove} number={index + 1} post={clip} showResults={showResults} />
+                    <ClipItem remove={remove} clips={clips} number={index + 1} post={clip} showResults={showResults} />
                 </CSSTransition>
                 )}
             </TransitionGroup>

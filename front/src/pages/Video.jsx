@@ -22,7 +22,7 @@ function Video() {
         setTotalPages(getPageCount(totalCount, limit));
     })
 
-    console.log(clips)
+    //console.log(clips)
 
     useObserver(lastElement, page < totalPages, isClipsLoading, () => {
         setPage(page + 1)
@@ -32,18 +32,16 @@ function Video() {
         fetchClips(limit, page)
     }, [page, limit])
 
-    const removeClip = (clip) => {
-        setClips(clips.filter(c => c.subclipId !== clip.subclipId))
+    const removeClips = (clipsToRemove) => {
+        console.log(clipsToRemove)
+        console.log(clips.filter(c => !clipsToRemove.includes(c.subclipId)));
     }
 
     return (
 
         <Layout.Content>
-
-            <ClipList remove={removeClip} clips={clips} title="Short clips"/>
-
+            <ClipList remove={removeClips} clips={clips} title="Short clips"/>
             <Row justify="center" style={{height: '100vh'}}>
-
             <div ref={lastElement} />
 
             {isClipsLoading &&
