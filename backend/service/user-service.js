@@ -10,7 +10,7 @@ class UserService {
     async registration(email, password) {
         const candidate = await UserModel.findOne({email})
         if (candidate) {
-            throw ApiError.BadRequest(`Пользователь с почтовым адресом ${email} уже существует`)
+            throw ApiError.BadRequest(`User with such email ${email} doesn't exist`)
         }
         const hashPassword = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4(); // v34fa-asfasf-142saf-sa-asf
@@ -21,31 +21,32 @@ class UserService {
         const userDto = new UserDto(user); // id, email, isActivated
         const tokens = tokenService.generateTokens({...userDto});
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
         return {...tokens, user: userDto}
     }
 
     async activate(activationLink) {
         const user = await UserModel.findOne({activationLink})
         if (!user) {
-            throw ApiError.BadRequest('Неккоректная ссылка активации')
+            throw ApiError.BadRequest('Activation link is incorrect')
         }
-        user.isActivated = true;
+        user.isEmailActivated = true;
         await user.save();
     }
 
     async login(email, password) {
         const user = await UserModel.findOne({email})
         if (!user) {
-            throw ApiError.BadRequest('Пользователь с таким email не найден')
+            throw ApiError.BadRequest('User with such email not found')
+        }
+        if (UserModel.findOne({email, isUserActive: false})) {
+            throw ApiError.BadRequest('User account deactivated by Admin')
         }
         const isPassEquals = await bcrypt.compare(password, user.password);
         if (!isPassEquals) {
-            throw ApiError.BadRequest('Неверный пароль');
+            throw ApiError.BadRequest('Password is incorrect');
         }
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto});
-
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
         return {...tokens, user: userDto}
     }
@@ -75,6 +76,22 @@ class UserService {
     async getAllUsers() {
         const users = await UserModel.find();
         return users;
+    }
+    async updatePassword(email, newPassword){
+        const user = await UserModel.findOne({email})
+        if (!user) {
+            throw ApiError.BadRequest('User with such email not found')
+        }
+        const hashPassword = await bcrypt.hash(newPassword, 3);
+        await UserModel.update({password: hashPassword})
+    }
+    async deactivateUser(email){
+        const user = await UserModel.findOne({email, isUserActive: false})
+        if (user) {
+            throw ApiError.BadRequest('This user has already deactivated')
+        }
+        user.isUserActive = false;
+        await user.save();
     }
 }
 
