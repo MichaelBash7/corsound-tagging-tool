@@ -69,6 +69,25 @@ class UserController {
             next(e);
         }
     }
+
+    async updateUserPassword(req, res, next) {
+        try {
+            const {email, newPassword} = req.body
+            const userData = await userService.updatePassword(email, newPassword);
+            return res.json(userData);
+        } catch (e) {
+            next(e);
+        }
+    }
+    async deactivateUser(req, res, next) {
+        try {
+            const {email, isUserActive} = req.body
+            const userData = await userService.deactivateUser(email, isUserActive);
+            return res.json(userData);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 

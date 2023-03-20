@@ -14,5 +14,7 @@ router.post('/logout', userController.logout);
 router.get('/activate/:link', userController.activate);
 router.get('/refresh', userController.refresh);
 router.get('/users', authMiddleware, userController.getUsers);
+router.put('/update-password', authMiddleware, userController.updateUserPassword);
+router.put('/deactivate-user', authMiddleware, userController.deactivateUser);
 
 module.exports = router
