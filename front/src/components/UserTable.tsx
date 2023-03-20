@@ -1,28 +1,31 @@
 import React, {FC, useState, useEffect} from 'react';
-import {Table, Input, Space, Button, Typography, Checkbox, message, Select} from "antd";
+import {Table, Input, Space, Button, Checkbox, message, Select} from "antd";
 import {observer} from "mobx-react-lite";
 import {EditTwoTone} from '@ant-design/icons';
 import ClipService from "../api/ClipService";
 import UserService from "../services/UserService";
 import {Link} from "react-router-dom";
 import {UserBase} from "../models/UserBase";
+import StatisticsField from "../components/ui/usertable/StatisticsField";
+import EmailField from "../components/ui/usertable/EmailField";
 
 const UserTable: FC = () => {
 
-    const {Text} = Typography;
-
     interface UserList extends UserBase {
         stat?: object,
-        isActive: boolean, //@TODO: move to UserBase
+        isActive: boolean, //@TODO: move to UserBase: isActive and password
         edit: boolean,
         password: string,
+        datasets: string[],
     }
 
     const [users, setUsers] = useState<UserList[]>([])
     const [datasets, setDatasets] = useState<string[]>([])
 
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
-    const filteredOptions = datasets.filter((o) => !selectedItems.includes(o));
+    const filterOptions = (selected: string[]) => {
+        return datasets.filter(val => !selected.includes(val))
+    }
 
     const toggleEdit = (id: string) => {
         const newUsersState = users.map(user => {
@@ -54,6 +57,7 @@ const UserTable: FC = () => {
                     isActive: true,
                     edit: false,
                     password: '',
+                    datasets: [],
                 })
             })
             setUsers(usersList)
@@ -64,26 +68,14 @@ const UserTable: FC = () => {
         })
     }, []);
 
-    const renderDataCell = (data: any) => {
-        if (!data) return
-        let list = []
-        for (const [k, v] of Object.entries(data)) {
-            list.push(<Text><>{k}: {v}</></Text>)
-        }
-        return (<Space direction="vertical">{list}</Space>)
-    }
-
-    const updateUser = (id:string) => {
-        const user = users.find(user => user.id === id)
+    const updateUser = (userId:string) => {
+        const user = users.find(user => user.id === userId)
         if (!user) return
-        console.log({
-            email: user.email,
-            isActive: user.isActive,
-            password: user.password,
-        })
+        const {stat, ...updateFields} = user //remove unnecessary fields
+        console.log(updateFields)
         // post 'user_update' .then
         message.success('Submit success!');
-        toggleEdit(id)
+        toggleEdit(userId)
     }
     const updateIsActive = (id: string) => {
         const newUsersState = users.map(user => {
@@ -105,11 +97,21 @@ const UserTable: FC = () => {
         setUsers(newUsersState)
     }
 
+    const updateDatasets = (id: string, newDatasets: string[]) => {
+        const newUsersState = users.map(user => {
+            if (user.id === id) {
+                user.datasets = newDatasets
+            }
+            return user
+        })
+        setUsers(newUsersState)
+    }
+
     const columns = [
         {
             title: 'Edit',
             key: 'edit',
-            render: (_: any, record: any) => (
+            render: (_: any, record: UserList) => ( //@Todo: move to ../components/ui/usertable
                 <>
                     <EditTwoTone onClick={() => toggleEdit(record.id)} style={{cursor: 'pointer', lineHeight: '36px'}}/>
                     {record.edit &&
@@ -129,11 +131,7 @@ const UserTable: FC = () => {
             dataIndex: 'email',
             key: 'email',
             width: 100,
-            render: (_: any, record: UserList) => (
-                <Space size="middle">
-                    <Link to={"/admin/user/" + record.id}>{record.email}</Link>
-                </Space>
-            ),
+            render: (_: any, record: UserList) => EmailField(record),
         },
         {
             title: 'Active',
@@ -171,10 +169,10 @@ const UserTable: FC = () => {
                     mode="multiple"
                     disabled={!record.edit}
                     placeholder="Choose dataset"
-                    value={selectedItems}
-                    onChange={setSelectedItems}
+                    value={record.datasets}
+                    onChange={selected => updateDatasets(record.id, selected)}
                     style={{ width: '100%' }}
-                    options={filteredOptions.map((item) => ({
+                    options={filterOptions(record.datasets).map((item) => ({
                         value: item,
                         label: item,
                     }))}
@@ -186,7 +184,7 @@ const UserTable: FC = () => {
             title: 'Statistics',
             dataIndex: 'stat',
             key: 'stat',
-            render: (object: object) => renderDataCell(object)
+            render: (object: object) => StatisticsField(object)
         }
     ];
 
