@@ -87,7 +87,7 @@ const ClipItem = (props) => {
     const printFormOptions = (formConfigKey) => {
         let options = []
         formConfig[formConfigKey].map(value => {
-            options.push(<option value={value}>{value}</option>)
+            options.push(<option key={value} value={value}>{value}</option>)
         })
         return options
     }
@@ -126,7 +126,6 @@ const ClipItem = (props) => {
                     <option value="">Ethnicity</option>
                     {printFormOptions('ethnicity')}
                 </select>
-                <input hidden value={props.post.subclipId} name="clipid" readOnly={props.showResults}></input>
                 <Button
                     disabled={isDisabled}
                     onClick={() => {
@@ -151,7 +150,7 @@ const ClipItem = (props) => {
                 </Button>
             </div>
             <Space wrap>
-                <Button onClick={() => openModal(props.post.videoId)}>Parent video</Button>
+                <Button disabled={props.showResults} onClick={() => openModal(props.post.videoId)}>Parent video</Button>
                 <Modal
                     title={"Entire video " + props.post.videoId}
                     open={modalWindow.isOpen}

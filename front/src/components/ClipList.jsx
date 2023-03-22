@@ -21,7 +21,7 @@ const ClipList = ({clips, title, remove = null, showResults = false}) => {
             <TransitionGroup>
                 {clips.map((clip, index) =>
                 <CSSTransition
-                    key={clip.id}
+                    key={index}
                     timeout={500}
                     classNames="post"
                 >

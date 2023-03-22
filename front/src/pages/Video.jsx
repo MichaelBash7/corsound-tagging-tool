@@ -37,7 +37,6 @@ function Video() {
     }
 
     return (
-
         <Layout.Content>
             <ClipList remove={removeClips} clips={clips} title="Short clips"/>
             <Row justify="center" style={{height: '100vh'}}>
