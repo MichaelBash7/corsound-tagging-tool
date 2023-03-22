@@ -33,8 +33,7 @@ function Video() {
     }, [page, limit])
 
     const removeClips = (clipsToRemove) => {
-        console.log(clipsToRemove)
-        console.log(clips.filter(c => !clipsToRemove.includes(c.subclipId)));
+        setClips(clips.filter(c => !clipsToRemove.includes(c.subclipId)))
     }
 
     return (
