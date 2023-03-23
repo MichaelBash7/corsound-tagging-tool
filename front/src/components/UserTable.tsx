@@ -4,7 +4,6 @@ import {observer} from "mobx-react-lite";
 import {EditTwoTone} from '@ant-design/icons';
 import ClipService from "../api/ClipService";
 import UserService from "../services/UserService";
-import {Link} from "react-router-dom";
 import {UserBase} from "../models/UserBase";
 import StatisticsField from "../components/ui/usertable/StatisticsField";
 import EmailField from "../components/ui/usertable/EmailField";
@@ -73,7 +72,7 @@ const UserTable: FC = () => {
         if (!user) return
         const {stat, ...updateFields} = user //remove unnecessary fields
         console.log(updateFields)
-        // post 'user_update' .then
+        UserService.updateUser(updateFields.email, updateFields.password, updateFields.isActive)
         message.success('Submit success!');
         toggleEdit(userId)
     }

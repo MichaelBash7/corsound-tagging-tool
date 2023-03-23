@@ -1,7 +1,7 @@
 export interface IUser {
-    email: string;
-    isEmailActivated: boolean;
-    isUserActive: boolean;
-    _id: string;
-    isUserActive: boolean;
+    _id: string
+    email: string
+    password: string
+    isEmailActivated: boolean
+    isUserActive: boolean
 }

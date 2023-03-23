@@ -38,8 +38,7 @@ class UserService {
         if (!user) {
             throw ApiError.BadRequest('User with such email not found')
         }
-        const activeUser = await UserModel.findOne({isUserActive: true})
-        if (!activeUser) {
+        if (!user.isUserActive) {
             throw ApiError.BadRequest('User account deactivated by Admin')
         }
         const isPassEquals = await bcrypt.compare(password, user.password);
@@ -78,21 +77,13 @@ class UserService {
         const users = await UserModel.find();
         return users;
     }
-    async updatePassword(email, newPassword){
+    async updateUser(email, newPassword, isUserActive){
         const user = await UserModel.findOne({email})
         if (!user) {
             throw ApiError.BadRequest('User with such email not found')
         }
         const hashPassword = await bcrypt.hash(newPassword, 3);
-        await UserModel.update({password: hashPassword})
-    }
-    async deactivateUser(email){
-        const user = await UserModel.findOne({email, isUserActive: false})
-        if (user) {
-            throw ApiError.BadRequest('This user has already deactivated')
-        }
-        user.isUserActive = false;
-        await user.save();
+        await UserModel.updateOne({email: email}, {password: hashPassword, isUserActive})
     }
 }
 

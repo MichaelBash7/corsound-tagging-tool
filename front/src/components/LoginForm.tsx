@@ -9,6 +9,7 @@ const LoginForm : FC = () => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const {store} = useContext(Context)
+    const [errorMessage, setErrorMessage] = useState('');
 
     return (
         <Form>
