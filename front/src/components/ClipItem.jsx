@@ -93,7 +93,6 @@ const ClipItem = (props) => {
                         <option value="">Ethnicity</option>
                         {printFormOptions('ethnicity')}
                     </select>
-                    <input hidden value={props.post.subclipId} name="clipid" readOnly={props.showResults}></input>
                     <MyButton     disabled={isDisabled}
                                   onClick={() => {
                                   selectOkValues.videoId = props.post.subclipId;

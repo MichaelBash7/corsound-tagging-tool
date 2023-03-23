@@ -70,24 +70,24 @@ class UserController {
         }
     }
 
-    async updateUserPassword(req, res, next) {
+    async updateUser(req, res, next) {
         try {
-            const {email, newPassword} = req.body
-            const userData = await userService.updatePassword(email, newPassword);
+            const {email, newPassword, isUserActive} = req.body
+            const userData = await userService.updateUser(email, newPassword, isUserActive);
             return res.json(userData);
         } catch (e) {
             next(e);
         }
     }
-    async deactivateUser(req, res, next) {
-        try {
-            const {email, isUserActive} = req.body
-            const userData = await userService.deactivateUser(email, isUserActive);
-            return res.json(userData);
-        } catch (e) {
-            next(e);
-        }
-    }
+    // async deactivateUser(req, res, next) {
+    //     try {
+    //         const {email, isUserActive} = req.body
+    //         const userData = await userService.deactivateUser(email, isUserActive);
+    //         return res.json(userData);
+    //     } catch (e) {
+    //         next(e);
+    //     }
+    // }
 }
 
 
