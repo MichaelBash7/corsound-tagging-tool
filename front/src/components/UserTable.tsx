@@ -48,7 +48,7 @@ const UserTable: FC = () => {
                     id: user._id,
                     email: user.email,
                     stat: {},
-                    isActive: true,
+                    isActive: user.isUserActive,
                     edit: false,
                     password: '',
                 })
