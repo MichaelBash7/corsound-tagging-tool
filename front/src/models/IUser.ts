@@ -3,4 +3,5 @@ export interface IUser {
     isEmailActivated: boolean;
     isUserActive: boolean;
     _id: string;
+    isUserActive: boolean;
 }
