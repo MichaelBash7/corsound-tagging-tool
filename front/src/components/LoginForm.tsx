@@ -1,21 +1,22 @@
 import React, {FC, useContext, useState} from 'react';
-import {Button, Form, Input} from "antd";
+import {Alert, Button, Form, Input} from "antd";
 import {rules} from "../utils/rules";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
+
 
 const LoginForm : FC = () => {
 
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const {store} = useContext(Context)
-    const [errorMessage, setErrorMessage] = useState('');
 
     return (
         <Form>
-            {/*{error && <div style={{color: 'red'}}>*/}
-                {/*{error}*/}
-            {/*</div>}*/}
+            {store.errorMessage && (
+                <Form.Item>
+                    <Alert message={store.errorMessage} type="error" showIcon />
+                </Form.Item>)}
             <Form.Item
                 label="Username"
                 name="username"
@@ -38,7 +39,6 @@ const LoginForm : FC = () => {
                     Log in
                 </Button>
             </Form.Item>
-
         </Form>
     );
 };

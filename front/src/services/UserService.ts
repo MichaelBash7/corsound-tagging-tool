@@ -6,7 +6,7 @@ export default class UserService {
     static fetchUsers(): Promise<AxiosResponse<IUser[]>> {
         return $api.get<IUser[]>('/users')
     }
-    static updateUser(email: string, newPassword: string, isUserActive: boolean): Promise<AxiosResponse<IUser>> {
-        return $api.put<IUser>('/update-user', {email, newPassword, isUserActive})
+    static updateUser(email: string, newPassword: string, isUserActive: boolean, datasets: Array<string>): Promise<AxiosResponse<IUser>> {
+        return $api.put<IUser>('/update-user', {email, newPassword, isUserActive, datasets})
     }
 }

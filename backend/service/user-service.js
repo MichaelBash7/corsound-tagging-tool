@@ -77,13 +77,23 @@ class UserService {
         const users = await UserModel.find();
         return users;
     }
-    async updateUser(email, newPassword, isUserActive){
+    async updateUser(email, newPassword, isUserActive, datasets){
         const user = await UserModel.findOne({email})
         if (!user) {
             throw ApiError.BadRequest('User with such email not found')
         }
-        const hashPassword = await bcrypt.hash(newPassword, 3);
-        await UserModel.updateOne({email: email}, {password: hashPassword, isUserActive})
+        const updates = {}
+        if (newPassword) {
+            const hashPassword = await bcrypt.hash(newPassword, 3);
+            updates.password = hashPassword;
+        }
+        if (typeof isUserActive === 'boolean') {
+            updates.isUserActive = isUserActive;
+        }
+        if (datasets && datasets.length > 0) {
+            updates.datasets = datasets;
+        }
+        await UserModel.updateOne({email: email}, updates)
     }
 }
 

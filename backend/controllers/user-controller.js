@@ -72,22 +72,13 @@ class UserController {
 
     async updateUser(req, res, next) {
         try {
-            const {email, newPassword, isUserActive} = req.body
-            const userData = await userService.updateUser(email, newPassword, isUserActive);
+            const {email, newPassword, isUserActive, datasets} = req.body
+            const userData = await userService.updateUser(email, newPassword, isUserActive, datasets);
             return res.json(userData);
         } catch (e) {
             next(e);
         }
     }
-    // async deactivateUser(req, res, next) {
-    //     try {
-    //         const {email, isUserActive} = req.body
-    //         const userData = await userService.deactivateUser(email, isUserActive);
-    //         return res.json(userData);
-    //     } catch (e) {
-    //         next(e);
-    //     }
-    // }
 }
 
 

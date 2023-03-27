@@ -9,6 +9,7 @@ export default class Store {
     user = {} as IUser;
     isAuth = false;
     isLoading = false;
+    errorMessage = '';
 
     constructor() {
         makeAutoObservable(this);
@@ -25,6 +26,9 @@ export default class Store {
     setLoading(bool: boolean) {
         this.isLoading = bool;
     }
+    setErrorMessage(message: string) {
+        this.errorMessage = message;
+    }
 
     async login(email: string, password: string) {
         try {
@@ -34,6 +38,7 @@ export default class Store {
             this.setAuth(true);
             this.setUser(response.data.user);
         } catch (e) {
+            this.setErrorMessage(e.response?.data?.message);
             console.log(e.response?.data?.message);
         }
     }
@@ -43,6 +48,7 @@ export default class Store {
             const response = await AuthService.registration(email, password);
             console.log(response)
         } catch (e) {
+            this.setErrorMessage(e.response?.data?.message);
             console.log(e.response?.data?.message);
         }
     }

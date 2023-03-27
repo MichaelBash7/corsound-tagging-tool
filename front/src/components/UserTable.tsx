@@ -72,7 +72,7 @@ const UserTable: FC = () => {
         if (!user) return
         const {stat, ...updateFields} = user //remove unnecessary fields
         console.log(updateFields)
-        UserService.updateUser(updateFields.email, updateFields.password, updateFields.isActive)
+        UserService.updateUser(updateFields.email, updateFields.password, updateFields.isActive, updateFields.datasets)
         message.success('Submit success!');
         toggleEdit(userId)
     }
