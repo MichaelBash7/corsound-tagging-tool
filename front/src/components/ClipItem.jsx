@@ -30,6 +30,10 @@ const ClipItem = (props) => {
 
     const openModal = (videoId) => {
         ClipService.getVideoById(videoId).then(response => {
+            //fix bug with extra slash at the end of url
+            if (response.data.s3_url.slice(-1) === '/') {
+                response.data.s3_url = response.data.s3_url.slice(0, -1);
+            }
             setModalWindow({
                 isOpen: true,
                 url: response.data.s3_url,
