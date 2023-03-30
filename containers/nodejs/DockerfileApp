@@ -1,0 +1,10 @@
+FROM node:18-alpine
+
+WORKDIR /src/app
+COPY ./backend/package.json ./
+RUN npm install --location=global npm && \
+    npm install
+#COPY . .
+EXPOSE 5000
+
+CMD ["npm", "run", "dev"]
