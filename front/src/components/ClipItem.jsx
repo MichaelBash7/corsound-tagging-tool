@@ -176,7 +176,6 @@ const ClipItem = (props) => {
                         playing={modalWindow.isPlaying}
                         controls={true}
                         onPlay={() => setModalWindow({...modalWindow, isPlaying: true})}
-                        onPause={() => setModalWindow({...modalWindow, isPlaying: false})}
                     />
 
                     <Space wrap style={{margin: "10px 0", display: "flex", justifyContent: "center"}}>
