@@ -9,13 +9,6 @@ const Navbar = () => {
 
     const {store} = useContext(Context)
 
-    const admins = ['Mihaelbash@yandex.ru', 'arkady.krishtul@corsound.ai']
-
-    let isAdmin = false
-    if (admins.includes(store.user.email)) {
-        isAdmin = true
-    }
-
     return (
             <Layout.Header>
                 {store.isAuth
@@ -26,7 +19,7 @@ const Navbar = () => {
                                 {store.user.email}
                             </div>
 
-                            {isAdmin && (
+                            {store.user.isAdmin && (
                                 <>
                                     <Menu.Item key={1}>
                                         <Link to="/admin/users">Users list</Link>

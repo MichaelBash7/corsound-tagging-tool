@@ -4,4 +4,5 @@ export interface IUser {
     password: string
     isEmailActivated: boolean
     isUserActive: boolean
+    isAdmin: boolean
 }
