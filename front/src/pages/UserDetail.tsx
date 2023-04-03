@@ -1,12 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Button, Layout, Menu, Row, Breadcrumb, Space} from "antd";
-import CreateUser from "../components/CreateUser";
-import MyButton from "../components/ui/buttons/MyButton";
-import MyModal from "../components/ui/modal/MyModal";
-import {IUser} from "../models/IUser";
+import {Button, Layout, Space} from "antd";
 import {useParams} from "react-router-dom";
 import UserService from "../services/UserService";
-import UserTable from "../components/UserTable";
 import {UserBase} from "../models/UserBase";
 import ClipService from "../api/ClipService";
 import ClipList from "../components/ClipList";

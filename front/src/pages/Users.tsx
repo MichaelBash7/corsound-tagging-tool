@@ -1,10 +1,7 @@
 import React, {FC, useContext, useState} from 'react';
-import {Card, Layout, Menu, Row, Breadcrumb} from "antd";
+import {Button, Layout, Space} from "antd";
 import CreateUser from "../components/CreateUser";
-import MyButton from "../components/ui/buttons/MyButton";
 import MyModal from "../components/ui/modal/MyModal";
-import {IUser} from "../models/IUser";
-import UserService from "../services/UserService";
 import UserTable from "../components/UserTable";
 
 const Users: FC = () => {
@@ -13,17 +10,15 @@ const Users: FC = () => {
 
     return (
         <Layout.Content style={{height: '100vh'}}>
-
-            <Breadcrumb style={{margin: '16px 0'}}>
-                <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
-                    Create users
-                </MyButton>
+            <Space style={{margin: '16px 0'}}>
+                <Button style={{marginTop: 30}} onClick={() => setModal(true)}>
+                    Create user
+                </Button>
 
                 <MyModal visible={modal} setVisible={setModal}>
                     <CreateUser/>
                 </MyModal>
-
-            </Breadcrumb>
+            </Space>
 
             <UserTable/>
         </Layout.Content>
