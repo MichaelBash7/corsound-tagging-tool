@@ -1,8 +1,8 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {Context} from "../index";
-import ClipPlayer from "./VideoPlayer";
 import ClipService from "../api/ClipService";
 import {Button, Space, Modal, Popconfirm, message} from 'antd';
+import ReactPlayer from "react-player";
 
 const ClipItem = (props) => {
 
@@ -25,6 +25,7 @@ const ClipItem = (props) => {
     const [selectOkValues, setSelectOkValues] = useState(defaultState);
     const [modalWindow, setModalWindow] = useState({
         isOpen: false,
+        isPlaying: false,
         url: '',
     });
 
@@ -36,14 +37,22 @@ const ClipItem = (props) => {
             }
             setModalWindow({
                 isOpen: true,
+                isPlaying: true,
                 url: response.data.s3_url,
             })
         })
     }
 
-    const toggleModal = () => {
-        setModalWindow({...modalWindow, isOpen: !modalWindow.isOpen})
+    const closeModal = () => {
+        setModalWindow({...modalWindow, isPlaying: false})
     };
+
+    useEffect(() => {
+        //this fixes a bug: stop playing after closing Modal didn't work
+        if (modalWindow.isPlaying === false && modalWindow.isOpen !== false) {
+            setModalWindow({...modalWindow, isOpen: false})
+        }
+    }, [modalWindow]);
 
     const handleVideoNotValid = () => {
         const videoData = {
@@ -56,7 +65,7 @@ const ClipItem = (props) => {
         const clipsToRemove = props.clips.filter(clip => clip.videoId === props.post.videoId).map(clip => clip.subclipId)
         console.log('Removed: ' + clipsToRemove.length)
         props.remove(clipsToRemove)
-        toggleModal()
+        closeModal()
         message.success('Clips from that video have been removed')
     };
 
@@ -111,7 +120,7 @@ const ClipItem = (props) => {
             <div className="post__content">
                 <strong>{props.post.subclipId}</strong>
                 <div>
-                    <ClipPlayer url={props.post.s3_url}/>
+                    <ReactPlayer url={props.post.s3_url} playing={false} controls={true}/>
                 </div>
             </div>
             {printResult()}
@@ -158,11 +167,16 @@ const ClipItem = (props) => {
                 <Modal
                     title={"Entire video " + props.post.videoId}
                     open={modalWindow.isOpen}
-                    onCancel={toggleModal}
+                    onCancel={closeModal}
                     footer={null}
                     width={700}
                 >
-                    <ClipPlayer url={modalWindow.url}/>
+                    <ReactPlayer
+                        url={modalWindow.url}
+                        playing={modalWindow.isPlaying}
+                        controls={true}
+                        onPlay={() => setModalWindow({...modalWindow, isPlaying: true})}
+                    />
 
                     <Space wrap style={{margin: "10px 0", display: "flex", justifyContent: "center"}}>
                         <Popconfirm title="Sure?" onConfirm={() => handleVideoNotValid()}>
