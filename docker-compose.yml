@@ -12,6 +12,9 @@ services:
       - ./backend/:/src/app
       - /src/app/node_modules
     restart: always
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     networks:
       - net
 
@@ -38,8 +41,8 @@ services:
 networks:
   net:
     driver: bridge
-    driver_opts:
-      com.docker.network.driver.mtu: 1400
-    ipam:
-      config:
-        - subnet: 173.20.0.0/16
+#    driver_opts:
+#      com.docker.network.driver.mtu: 1400
+#    ipam:
+#      config:
+#        - subnet: 173.20.0.0/16

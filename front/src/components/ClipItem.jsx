@@ -99,9 +99,7 @@ const ClipItem = (props) => {
 
     const printFormOptions = (formConfigKey) => {
         let options = []
-        formConfig[formConfigKey].map(value => {
-            options.push(<option key={value} value={value}>{value}</option>)
-        })
+        formConfig[formConfigKey].map(value => options.push(<option key={value} value={value}>{value}</option>))
         return options
     }
 

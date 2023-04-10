@@ -1,4 +1,4 @@
-import React, {FC, useContext, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {Button, Layout, Space} from "antd";
 import CreateUser from "../components/CreateUser";
 import MyModal from "../components/ui/modal/MyModal";

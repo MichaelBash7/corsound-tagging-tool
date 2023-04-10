@@ -2,7 +2,6 @@ import React, {FC, useEffect, useState} from 'react';
 import {Button, Layout, Space} from "antd";
 import {useParams} from "react-router-dom";
 import UserService from "../services/UserService";
-import {UserBase} from "../models/UserBase";
 import ClipService from "../api/ClipService";
 import ClipList from "../components/ClipList";
 
@@ -22,13 +21,6 @@ const UserDetail: FC = () => {
             console.log(e)
         }
     }
-    const userId = params.id
-
-
-    interface UserDetail extends UserBase {
-        stat?: object,
-        videos: Array<number>
-    }
 
     const loadData = async ( email: string, lastItem = 0) => {
         ClipService.getUserVideos(email, PER_PAGE, lastLoaded).then(res => {
@@ -46,7 +38,6 @@ const UserDetail: FC = () => {
     }
 
     useEffect(() => {
-        const usersList: Array<UserDetail> = []
         getUsers().then((apiUsers) => { //@TODO getUserById
             if (!apiUsers) {
                 console.log('No users loaded')

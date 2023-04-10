@@ -20,8 +20,6 @@ const UserTable: FC = () => {
 
     const [users, setUsers] = useState<UserList[]>([])
     const [datasets, setDatasets] = useState<string[]>([])
-
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const filterOptions = (selected: string[]) => {
         return datasets.filter(val => !selected.includes(val))
     }
@@ -48,7 +46,7 @@ const UserTable: FC = () => {
         const usersList: Array<UserList> = []
         getUsers().then((apiUsers) => {
             if (!apiUsers) return
-            apiUsers.data.map((user) => {
+            apiUsers.data.map((user) =>
                 usersList.push({
                     id: user._id,
                     email: user.email,
@@ -56,9 +54,9 @@ const UserTable: FC = () => {
                     isActive: user.isUserActive,
                     edit: false,
                     password: '',
-                    datasets: (user.datasets[0] == '') ? [] : user.datasets,
+                    datasets: (user.datasets[0] === '') ? [] : user.datasets,
                 })
-            })
+            )
             setUsers(usersList)
         })
 
@@ -189,14 +187,14 @@ const UserTable: FC = () => {
 
     const loadStat = () => {
         const usersWithStat = users
-        usersWithStat.map((user, index) => {
+        usersWithStat.map((user, index) =>
             ClipService.getUserStat(user.email).then((res) => {
                 if (res) {
                     usersWithStat[index].stat = res.data.reviewers[user.email]
                     setUsers([...usersWithStat])
                 }
             }).catch((e) => console.log(`Error: ${e}`))
-        })
+        )
     }
 
     return (

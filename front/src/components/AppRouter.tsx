@@ -1,9 +1,8 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {Routes, Route, Navigate} from "react-router-dom";
 import {privateRoutes, publicRoutes, RouteNames} from "../router";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
-
 
 const AppRouter = () => {
 
