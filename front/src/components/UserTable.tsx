@@ -56,7 +56,7 @@ const UserTable: FC = () => {
                     isActive: user.isUserActive,
                     edit: false,
                     password: '',
-                    datasets: [],
+                    datasets: (user.datasets[0] == '') ? [] : user.datasets,
                 })
             })
             setUsers(usersList)

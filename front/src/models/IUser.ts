@@ -5,4 +5,5 @@ export interface IUser {
     isEmailActivated: boolean
     isUserActive: boolean
     isAdmin: boolean
+    datasets: string[]
 }
