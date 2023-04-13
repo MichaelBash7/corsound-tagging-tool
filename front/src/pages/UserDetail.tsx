@@ -48,6 +48,7 @@ const UserDetail: FC = () => {
             setEmail(user.email) // @TODO pass email to loadMore func without state?
             loadData(user.email,0)
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [])
 
     const loadMore = () => {

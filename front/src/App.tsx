@@ -14,6 +14,7 @@ const App: FC = () => {
         if (localStorage.getItem('token')) {
             store.checkAuth()
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (store.isLoading) {
