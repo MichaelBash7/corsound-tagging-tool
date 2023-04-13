@@ -10,6 +10,7 @@ const app = express()
 
 const dotenv = require('dotenv');
 dotenv.config();
+mongoose.set('strictQuery', false);
 
 app.use(express.json());
 app.use(cookieParser());
