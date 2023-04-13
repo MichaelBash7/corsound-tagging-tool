@@ -1,5 +1,6 @@
 .idea/
 venv
-.env
+backend/.env
+front/.env
 backend/node_modules
 front/node_modules/
